@@ -1,5 +1,4 @@
 from random import randint
-from termcolor import colored, cprint
 import os
 class bcolors:
     HEADER = '\033[1;32;40m' # green letters w/ black background
@@ -8,8 +7,6 @@ class bcolors:
     HINT = '\033[1;31;40m' # green letters
     DRAW = '\033[1;0;41m' # red
     ENDC = '\033[0m'
-
-def 
 
 def settings(key=None, value=None):
     default = {
@@ -94,7 +91,7 @@ def check_board(number):
     else:
         return False
 
-def show_board():
+''' def show_board():
     print(color.BOARD + "-------------------" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[0] + "  |  " + board[1] + "  |  " + board[2] + "  |" + color.ENDC)
@@ -107,7 +104,21 @@ def show_board():
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[6] + "  |  " + board[7] + "  |  " + board[8] + "  |" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
-    print(color.BOARD + "-------------------" + color.ENDC)
+    print(color.BOARD + "-------------------" + color.ENDC) '''
+
+
+def show_board():
+    store_board = ""
+
+    for place in range(0, len(board)):
+        if (place + 1) % settings()["boards"] == 0:
+            store_board += color.BOARD + board[place] + "|" + color.ENDC + "\n"
+        elif (place + 1)%settings()["boards"] == 1:
+            store_board += color.BOARD + "|" + board[place] + "|" + color.ENDC
+        else:
+            store_board += color.BOARD + board[place] + "|" + color.ENDC
+    
+    print(store_board)
 
 def check_winner(symbol):
     if board[0] == symbol and board[1] == symbol and board[2] == symbol:
@@ -180,7 +191,7 @@ if check_symbol(player_input):
     choices = set_symbols(choices, player_input)
 
     while True:
-        if last_rounds(): 
+        if last_round(): 
             if no_winner():
                 rounds = settings("rounds", (rounds-1))["rounds"]
                 continue
