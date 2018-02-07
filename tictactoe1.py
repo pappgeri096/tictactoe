@@ -92,7 +92,7 @@ def check_board(number):
     else:
         return False
 
-''' def show_board():
+def show_board():
     print(color.BOARD + "-------------------" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[0] + "  |  " + board[1] + "  |  " + board[2] + "  |" + color.ENDC)
@@ -105,21 +105,8 @@ def check_board(number):
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[6] + "  |  " + board[7] + "  |  " + board[8] + "  |" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
-    print(color.BOARD + "-------------------" + color.ENDC) '''
+    print(color.BOARD + "-------------------" + color.ENDC) 
 
-
-def show_board():
-    store_board = ""
-
-    for place in range(0, len(board)):
-        if (place + 1) % settings()["boards"] == 0:
-            store_board += color.BOARD + board[place] + "|" + color.ENDC + "\n"
-        elif (place + 1)%settings()["boards"] == 1:
-            store_board += color.BOARD + "|" + board[place] + "|" + color.ENDC
-        else:
-            store_board += color.BOARD + board[place] + "|" + color.ENDC
-    
-    print(store_board)
 
 def check_winner(symbol):
     if board[0] == symbol and board[1] == symbol and board[2] == symbol:
@@ -142,28 +129,6 @@ def check_winner(symbol):
         return False
 
 
-''' def check_winner(symbol, board, board_size):
-    for place in range(len(board)):
-        if (check_index(board, place + 1) and
-            check_index(board, place - 1) and
-            (board[place] == symbol) and
-            (board[place + 1] == symbol) and
-           (board[place - 1] == symbol)):
-            return True
-        elif (check_index(board, place + board_size) and
-              check_index(board, place - board_size) and
-              (board[place] == symbol) and
-              (board[place + board_size] == symbol) and
-              (board[place - board_size] == symbol)):
-            return True
-        elif (check_index(board, place + board_size + 1) and
-              check_index(board, place - board_size - 1) and
-              (board[place] == symbol) and (board[place + board_size + 1] == symbol) and
-              (board[place - board_size - 1] == symbol)):
-            return True
-        else:
-            return False
- '''
 def check_index(board, index):
     try:
         b = board[index]
