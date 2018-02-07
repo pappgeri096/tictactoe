@@ -108,7 +108,7 @@ def show_board():
     print(color.BOARD + "-------------------" + color.ENDC) 
 
 
-def check_winner(symbol):
+def check_winner(symbol, board):
     if board[0] == symbol and board[1] == symbol and board[2] == symbol:
         return True
     elif board[3] == symbol and board[4] == symbol and board[5] == symbol:
@@ -165,8 +165,23 @@ def change_player(current):
         return 1    
     return 0
 
+def duplicate_board():
+    dupboard = []
+
+    for i in board:
+        dupboard.append(i)
+    
+    return dupboard
+
 def artint():
-    board[randint(0, 8)] = choices[current_player]
+    for i in range(0,9):
+        board_duplicate = duplicate_board()
+        if board_duplicate[i] == " ":
+            board_duplicate[i] = "O"
+            if check_winner("O", board_duplicate):
+                player_input = i
+    else:
+        player_input = randint(1, 9)
 
 color = bcolors()
 header()
@@ -211,7 +226,7 @@ if check_symbol(player_input):
         print(color.QUESTION + "PLAYER " + choices[current_player] + " TURN | ROUND " + str(rounds) + color.ENDC)
         
         if single_player == True and current_player == 1:
-            player_input = randint(1, 9)  
+            artint()
         else:
             player_input = input(Phrases["Player_Step"])
 
@@ -220,7 +235,7 @@ if check_symbol(player_input):
             if check_board(player_input):
                 board[int(player_input) - 1] = choices[current_player]
                
-                if check_winner(choices[current_player]):
+                if check_winner(choices[current_player], board):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
