@@ -10,7 +10,9 @@ class bcolors:
 
 def settings(key=None, value=None):
     default = {
-        "results": 0,
+        "player_one": 0,
+        "player_two": 0,
+        "draws": 0,
         "rounds": 1,
         "current": 0,
         "choice": "X",
@@ -137,12 +139,42 @@ def check_winner(symbol):
         return True
     elif board[2] == symbol and board[4] == symbol and board[6] == symbol:
         return True
-    else:
+    else: 
         return False
+
+
+''' def check_winner(symbol, board, board_size):
+    for place in range(len(board)):
+        if (check_index(board, place + 1) and
+            check_index(board, place - 1) and
+            (board[place] == symbol) and
+            (board[place + 1] == symbol) and
+           (board[place - 1] == symbol)):
+            return True
+        elif (check_index(board, place + board_size) and
+              check_index(board, place - board_size) and
+              (board[place] == symbol) and
+              (board[place + board_size] == symbol) and
+              (board[place - board_size] == symbol)):
+            return True
+        elif (check_index(board, place + board_size + 1) and
+              check_index(board, place - board_size - 1) and
+              (board[place] == symbol) and (board[place + board_size + 1] == symbol) and
+              (board[place - board_size - 1] == symbol)):
+            return True
+        else:
+            return False
+ '''
+def check_index(board, index):
+    try:
+        b = board[index]
+    except IndexError:
+        return False
+    return True    
 
 def no_winner():
     if (player_one == player_two or
-       (draws == 3 and player_one == 0 and player_two == 0)):
+       (Draws == 3 and player_one == 0 and player_two == 0)):
         return True
     return False
     
@@ -173,16 +205,16 @@ def change_player(current):
 color = bcolors()
 header()
 
-player_one = settings()["results"]
-player_two = settings()["results"]
-draws = settings()["results"]
+player_one = settings()["player_one"]
+player_two = settings()["player_two"]
+Draws = settings()["draws"]
 rounds = settings()["rounds"]
 current_player = settings()["current"]
 choices = []
 Phrases = phrases()
 
 board = create_board(settings()["boards"])
-player_input = user_input((Phrases["Symbol"]).upper())
+player_input = input((Phrases["Symbol"]).upper())
 
 if not check_symbol(player_input):
     player_input = settings()["choice"]
@@ -203,13 +235,12 @@ if check_symbol(player_input):
                 print(Phrases["Player_One"])         
             else:
                 print(Phrases["Player_Two"])
-            print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)    
+            print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(Draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)    
             break
 
         header()
-        print(choices) 
         show_board()
-        print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)
+        print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(Draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)
         print(color.QUESTION + "PLAYER " + choices[current_player] + " TURN | ROUND " + str(rounds) + color.ENDC)
         player_input = input(Phrases["Player_Step"])
 
@@ -222,9 +253,9 @@ if check_symbol(player_input):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
-                        player_one += 1
+                        player_one += settings("player_one", player_one+1)["player_one"]
                     else:
-                        player_two += 1
+                        player_two += settings("player_two", player_one+1)["player_two"]
 
                     rounds += 1
                     board = create_board(settings()["boards"])
@@ -235,7 +266,7 @@ if check_symbol(player_input):
         
                 if all_reserved():
                     print(Phrases["Draw"])
-                    draws += 1
+                    Draws += 1
                     rounds += 1
                     board = create_board(settings()["boards"])
                     continue
