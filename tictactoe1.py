@@ -61,7 +61,6 @@ def phrases():
 def check_number(value):
     try:
         value = int(value)
-        value < 10 and value > 1
     except ValueError:
         return False
     return True
@@ -166,13 +165,16 @@ def user_input(ask):
 
 def change_player(current):
     if current == 0:
-        return 1
+        return 1    
     return 0
 
+def artint():
+    board[randint(0, 8)] = choices[current_player]
 
 color = bcolors()
 header()
 
+single_player = True
 player_one = settings()["results"]
 player_two = settings()["results"]
 draws = settings()["results"]
@@ -189,7 +191,7 @@ if not check_symbol(player_input):
 
 if check_symbol(player_input):
     choices = set_symbols(choices, player_input)
-
+    
     while True:
         if last_round(): 
             if no_winner():
@@ -205,13 +207,17 @@ if check_symbol(player_input):
                 print(Phrases["Player_Two"])
             print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)    
             break
-
+                          
         header()
         print(choices) 
         show_board()
         print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)
         print(color.QUESTION + "PLAYER " + choices[current_player] + " TURN | ROUND " + str(rounds) + color.ENDC)
-        player_input = input(Phrases["Player_Step"])
+        
+        if single_player == True and current_player == 1:
+            player_input = randint(1, 9)  
+        else:
+            player_input = input(Phrases["Player_Step"])
 
         if check_number(player_input):
 
