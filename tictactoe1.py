@@ -179,9 +179,8 @@ def artint():
         if board_duplicate[i] == " ":
             board_duplicate[i] = "O"
             if check_winner("O", board_duplicate):
-                player_input = i
-    else:
-        player_input = randint(1, 9)
+                return i
+        return randint(1, 9)
 
 color = bcolors()
 header()
@@ -226,7 +225,7 @@ if check_symbol(player_input):
         print(color.QUESTION + "PLAYER " + choices[current_player] + " TURN | ROUND " + str(rounds) + color.ENDC)
         
         if single_player == True and current_player == 1:
-            artint()
+            player_input = artint()
         else:
             player_input = input(Phrases["Player_Step"])
 
