@@ -16,7 +16,7 @@ def settings(key=None, value=None):
         "rounds": 1,
         "current": 0,
         "choice": "X",
-        "boards": 3
+        "boards": 5
     }
 
     if not (key is None and value is None) and key in default:
@@ -84,7 +84,7 @@ def header():
 
 def check_board(number):
     number = int(number)
-    if number < 10 and number > 0:
+    if number < ((settings()["boards"] * settings()["boards"]) + 1) and number > 0:
         if board[number - 1] == "X" or board[number - 1] == "O":
             return False
         else:
@@ -92,7 +92,7 @@ def check_board(number):
     else:
         return False
 
-def show_board():
+''' def show_board():
     print(color.BOARD + "-------------------" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[0] + "  |  " + board[1] + "  |  " + board[2] + "  |" + color.ENDC)
@@ -105,9 +105,23 @@ def show_board():
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
     print(color.BOARD + "|  " + board[6] + "  |  " + board[7] + "  |  " + board[8] + "  |" + color.ENDC)
     print(color.BOARD + "|   ""  |  ""   |  ""   |" + color.ENDC)
+    print(color.BOARD + "-------------------" + color.ENDC) '''
+
+def show_board():
+    store_board = ""
     print(color.BOARD + "-------------------" + color.ENDC) 
 
+    for place in range(0, len(board)):
+        if (place + 1) % settings()["boards"] == 0:
+            store_board += color.BOARD + board[place] + "|" + color.ENDC + "\n"
+        elif (place + 1) % settings()["boards"] == 1:
+            store_board += color.BOARD + "|" + board[place] + "|" + color.ENDC
+        else:
+            store_board += color.BOARD + board[place] + "|" + color.ENDC
+    
+    print(store_board)
 
+''' 
 def check_winner(symbol, board):
     if board[0] == symbol and board[1] == symbol and board[2] == symbol:
         return True
@@ -126,7 +140,19 @@ def check_winner(symbol, board):
     elif board[2] == symbol and board[4] == symbol and board[6] == symbol:
         return True
     else: 
-        return False
+        return False '''
+
+def check_winner(symbol, board, board_size):
+    for index in range(len(board)):
+        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol and check_index(board, index + (board_size - 1)) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol:
+            return True
+    return False
 
 
 def check_index(board, index):
@@ -134,7 +160,7 @@ def check_index(board, index):
         b = board[index]
     except IndexError:
         return False
-    return True    
+    return board[index]   
 
 def no_winner():
     if (player_one == player_two or
@@ -178,9 +204,9 @@ def artint():
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
             board_duplicate[i] = "O"
-            if check_winner("O", board_duplicate):
+            if check_winner("O", board_duplicate, settings()["boards"]):
                 return i
-        return randint(1, 9)
+            return randint(1, 9)
 
 color = bcolors()
 header()
@@ -234,7 +260,7 @@ if check_symbol(player_input):
             if check_board(player_input):
                 board[int(player_input) - 1] = choices[current_player]
                
-                if check_winner(choices[current_player], board):
+                if check_winner(choices[current_player], board, settings()["boards"]):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
