@@ -226,19 +226,18 @@ def artint():
     for i in range(0,25):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = choices[0]
-            if check_winner(choices[0], board_duplicate, settings()["boards"]):
-                print(i)
+            board_duplicate[i] = choices[1]
+            if check_winner(choices[1], board_duplicate, board_size):
                 return i+1
     
     for i in range(0,25):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = choices[1]
-            if check_winner(choices[1], board_duplicate, settings()["boards"]):
+            board_duplicate[i] = choices[0]
+            if check_winner(choices[0], board_duplicate, board_size):
                 return i+1
-            else:
-                return randint(1,24)
+                
+    return randint(1,24)
 
 
     ''' for i in range(0,24):
