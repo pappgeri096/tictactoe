@@ -149,16 +149,12 @@ def check_winner(symbol, board):
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
         if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol:
-            print("X")
             return True
         elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
-            print("O")
             return True
         elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol and check_index(board, index + (board_size - 1)) == symbol and index > board_size:
-            print("L")
             return True
         elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size* board_size):
-            print("J")
             return True
     return False
 
