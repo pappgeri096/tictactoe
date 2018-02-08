@@ -125,26 +125,37 @@ def show_board():
             store_board += board[place] + "|"
     
 
+''' 
+def check_winner(symbol, board):
+    if board[0] == symbol and board[1] == symbol and board[2] == symbol:
+        return True
+    elif board[3] == symbol and board[4] == symbol and board[5] == symbol:
+        return True
+    elif board[6] == symbol and board[7] == symbol and board[8] == symbol:
+        return True
+    elif board[0] == symbol and board[3] == symbol and board[6] == symbol:
+        return True
+    elif board[1] == symbol and board[4] == symbol and board[7] == symbol:
+        return True
+    elif board[2] == symbol and board[5] == symbol and board[8] == symbol:
+        return True
+    elif board[0] == symbol and board[4] == symbol and board[8] == symbol:
+        return True
+    elif board[2] == symbol and board[4] == symbol and board[6] == symbol:
+        return True
+    else: 
+        return False '''
+
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
-        (if board[index] == symbol and
-         check_index(board, index + 1) == symbol and
-         check_index(board, index - 1) == symbol and not
-         (index % board_size == 0)):
+        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol and not (index % board_size == 0):
             return True
-        (elif board[index] == symbol and
-         check_index(board, index - board_size) == symbol and
-         check_index(board, index + board_size) == symbol):
+        elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
             return True
-        (elif board[index] == symbol and
-         check_index(board, index - (board_size - 1)) == symbol and
-         check_index(board, index + (board_size - 1)) == symbol and
-         index > board_size):
+        elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol and check_index(board, index + (board_size - 1)) == symbol and index > board_size:
             return True
-        (elif board[index] == symbol and
-         check_index(board, index - (board_size + 1)) == symbol and
-         check_index(board, index + (board_size + 1)) == symbol and
-         index < (board_size * board_size) - board_size):
+        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size * board_size) - board_size:
+
             return True
     return False
 
