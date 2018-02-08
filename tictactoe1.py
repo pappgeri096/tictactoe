@@ -1,3 +1,4 @@
+import random
 from random import randint
 import os
 class bcolors:
@@ -199,14 +200,37 @@ def duplicate_board():
     
     return dupboard
 
+def artint_turn():
+    if settings()["player_one"] == "X":
+        return 1
+    return 0
+
+def choose_possible_move(moves_list):
+    moves = []
+    for i in moves_list:
+        if board[i] == " ":
+            moves.append(i)
+    return moves 
+
 def artint():
     for i in range(0,9):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = "O"
-            if check_winner("O", board_duplicate, settings()["boards"]):
+            board_duplicate[i] = settings()["player_two"]
+            if check_winner(settings()["player_two"], board_duplicate, settings()["boards"]):
                 return i
-            return randint(1, 9)
+    
+    for i in range(0,9):
+        board_duplicate = duplicate_board()
+        if board_duplicate[i] == " ":
+            board_duplicate[i] = settings()["player_one"]
+            if check_winner(settings()["player_one"], board_duplicate, settings()["boards"]):
+                return i
+    
+    ''' step = choose_possible_move([1,2,3])
+    if step != None:
+        return random.choice(step) '''
+    
 
 color = bcolors()
 header()
@@ -250,7 +274,7 @@ if check_symbol(player_input):
         print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(Draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)
         print(color.QUESTION + "PLAYER " + choices[current_player] + " TURN | ROUND " + str(rounds) + color.ENDC)
         
-        if single_player == True and current_player == 1:
+        if single_player == True and current_player == artint_turn():
             player_input = artint()
         else:
             player_input = input(Phrases["Player_Step"])
