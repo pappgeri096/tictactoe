@@ -123,28 +123,7 @@ def show_board():
             store_board += "|" + board[place] + "|"
         else:
             store_board += board[place] + "|"
-    
 
-''' 
-def check_winner(symbol, board):
-    if board[0] == symbol and board[1] == symbol and board[2] == symbol:
-        return True
-    elif board[3] == symbol and board[4] == symbol and board[5] == symbol:
-        return True
-    elif board[6] == symbol and board[7] == symbol and board[8] == symbol:
-        return True
-    elif board[0] == symbol and board[3] == symbol and board[6] == symbol:
-        return True
-    elif board[1] == symbol and board[4] == symbol and board[7] == symbol:
-        return True
-    elif board[2] == symbol and board[5] == symbol and board[8] == symbol:
-        return True
-    elif board[0] == symbol and board[4] == symbol and board[8] == symbol:
-        return True
-    elif board[2] == symbol and board[4] == symbol and board[6] == symbol:
-        return True
-    else: 
-        return False '''
 
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
