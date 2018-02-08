@@ -29,6 +29,7 @@ def clear_terminal():
     return os.system('clear')
 
 def set_symbols(store, player_one):
+    player_one = player_one.upper()
     if player_one == "X":
         store.extend((player_one, "O"))
     else:
@@ -36,7 +37,7 @@ def set_symbols(store, player_one):
     return store
 
 def check_symbol(symbol):
-    if symbol == "X" or symbol == "O":
+    if symbol.upper() == "X" or symbol.upper() == "O":
         return True
     return False  
 
@@ -266,9 +267,9 @@ if check_symbol(player_input):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
-                        player_one += settings("player_one", player_one+1)["player_one"]
+                        player_one += 1
                     else:
-                        player_two += settings("player_two", player_one+1)["player_two"]
+                        player_two += settings("player_two", player_two+1)["player_two"]
 
                     rounds += 1
                     board = create_board(settings()["boards"])
