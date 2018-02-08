@@ -207,41 +207,31 @@ def artint_turn():
         return 1
     return 0
 
-def choose_possible_move(moves_list):
-    moves = []
-    for i in moves_list:
-        if board[i] == " ":
-            moves.append(i)
-    return moves 
-
 def artint():
-    for i in range(1,9):
+    for i in range(0,25):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = settings()["player_two"]
-            if check_winner(settings()["player_two"], board_duplicate, settings()["boards"]):
-                return i
+            board_duplicate[i] = choices[0]
+            if check_winner(choices[0], board_duplicate, settings()["boards"]):
+                print(i)
+                return i+1
     
-    for i in range(1,9):
+    for i in range(0,25):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = settings()["player_one"]
-            if check_winner(settings()["player_one"], board_duplicate, settings()["boards"]):
-                return i
+            board_duplicate[i] = choices[1]
+            if check_winner(choices[1], board_duplicate, settings()["boards"]):
+                return i+1
+            else:
+                return randint(1,24)
 
-    ''' for i in range(1,9):
+
+    ''' for i in range(0,24):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
             board_duplicate[i] = settings()["player_two"]
             if check_step(settings()["player_two"], board_duplicate, settings()["boards"]):
                 return i  '''
-
-    return randint(1,9) 
-    
-    ''' step = choose_possible_move([1,2,3])
-    if step != None:
-        return random.choice(step) '''
-    
 
 color = bcolors()
 header()
