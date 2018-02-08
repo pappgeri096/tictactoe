@@ -148,7 +148,7 @@ def check_winner(symbol, board):
 
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
-        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol:
+        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol and not (index % board_size == 0):
             return True
         elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
             return True
