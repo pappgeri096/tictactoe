@@ -158,6 +158,17 @@ def check_winner(symbol, board, board_size):
             return True
     return False
 
+def check_step(symbol, board, board_size):
+    for index in range(len(board)):
+        if board[index] == symbol and check_index(board, index + 1) == symbol or check_index(board, index - 1) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - board_size) == symbol or check_index(board, index + board_size) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol or check_index(board, index + (board_size - 1)) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol or check_index(board, index + (board_size + 1)) == symbol:
+            return True
+    return False
 
 def check_index(board, index):
     try:
@@ -216,19 +227,31 @@ def choose_possible_move(moves_list):
     return moves 
 
 def artint():
-    for i in range(0,9):
+    for i in range(1,9):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
             board_duplicate[i] = settings()["player_two"]
             if check_winner(settings()["player_two"], board_duplicate, settings()["boards"]):
+                print("true")
                 return i
     
-    for i in range(0,9):
+    for i in range(1,9):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
             board_duplicate[i] = settings()["player_one"]
             if check_winner(settings()["player_one"], board_duplicate, settings()["boards"]):
+                print("true")
                 return i
+
+    for i in range(1,9):
+        board_duplicate = duplicate_board()
+        if board_duplicate[i] == " ":
+            board_duplicate[i] = settings()["player_two"]
+            if check_step(settings()["player_two"], board_duplicate, settings()["boards"]):
+                print("qqq")
+                return i 
+
+    return randint(1,9) 
     
     ''' step = choose_possible_move([1,2,3])
     if step != None:
@@ -238,7 +261,7 @@ def artint():
 color = bcolors()
 header()
 
-single_player = False
+single_player = True
 player_one = settings()["player_one"]
 player_two = settings()["player_two"]
 Draws = settings()["draws"]
