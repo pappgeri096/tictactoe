@@ -52,7 +52,7 @@ def create_board(size):
 
 def phrases():
     return {
-        "Symbol":color.DRAW + "Choose your symbol" + color.ENDC,
+        "Symbol": "Choose your symbol",
         "Game_Over":color.DRAW + "Finito! Good job!" + color.ENDC,
         "Player_One":color.DRAW + "PLAYER ONE WIN!" + color.ENDC,
         "Player_Two":color.DRAW + "PLAYER TWO WIN!" + color.ENDC,
@@ -115,11 +115,11 @@ def show_board():
     print(color.BOARD + "-------------------" + color.ENDC) 
 
     for place in range(0, len(board)):
-        if (place + 1) % settings()["boards"] == 0:
+        if (place + 1) % board_size == 0:
             store_board += board[place] + "|"
             print(color.BOARD + store_board + color.ENDC)
             store_board = ""
-        elif (place + 1) % settings()["boards"] == 1:
+        elif (place + 1) % board_size == 1:
             store_board += "|" + board[place] + "|"
         else:
             store_board += board[place] + "|"
@@ -148,7 +148,7 @@ def check_winner(symbol, board):
 
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
-        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol:
+        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol and not (index % board_size == 0):
             return True
         elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
             return True
@@ -189,6 +189,21 @@ def last_round():
 def user_input(ask):
     return input(ask)
 
+def change_game_mode(mode):
+    if(check_number(mode)):
+        mode = int(mode)
+
+    if mode == 1:
+        return True
+    return False
+
+
+def board_size(size):
+    if(check_number(size)):
+        size = int(size)
+    
+    return size
+
 def change_player(current):
     if current == 0:
         return 1    
@@ -204,8 +219,8 @@ def duplicate_board():
 
 def artint_turn():
     if settings()["player_one"] == "X":
-        return 1
-    return 0
+        return 0
+    return 1
 
 def artint():
     for i in range(0,25):
@@ -236,7 +251,7 @@ def artint():
 color = bcolors()
 header()
 
-single_player = True
+
 player_one = settings()["player_one"]
 player_two = settings()["player_two"]
 Draws = settings()["draws"]
@@ -245,8 +260,12 @@ current_player = settings()["current"]
 choices = []
 Phrases = phrases()
 
-board = create_board(settings()["boards"])
-player_input = input((Phrases["Symbol"]).upper())
+game_mode = input("1 or 2 player?")
+board_size_ask = input("Board size?")
+board_size = board_size(board_size_ask)
+board = create_board(board_size)
+single_player = change_game_mode(game_mode)
+player_input = input((Phrases["Symbol"])).upper()
 
 if not check_symbol(player_input):
     player_input = settings()["choice"]
@@ -285,16 +304,16 @@ if check_symbol(player_input):
             if check_board(player_input):
                 board[int(player_input) - 1] = choices[current_player]
                
-                if check_winner(choices[current_player], board, settings()["boards"]):
+                if check_winner(choices[current_player], board, board_size):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
                         player_one += 1
                     else:
-                        player_two += settings("player_two", player_two+1)["player_two"]
+                        player_two += 1
 
                     rounds += 1
-                    board = create_board(settings()["boards"])
+                    board = create_board(board_size)
 
                     continue
 
