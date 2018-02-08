@@ -1,6 +1,7 @@
 import random
 from random import randint
 import os
+
 class bcolors:
     HEADER = '\033[1;32;40m' # green letters w/ black background
     QUESTION = '\033[1;37;40m' # black background for questions w/ white letters
@@ -29,6 +30,7 @@ def clear_terminal():
     return os.system('clear')
 
 def set_symbols(store, player_one):
+    player_one = player_one.upper()
     if player_one == "X":
         store.extend((player_one, "O"))
     else:
@@ -36,7 +38,7 @@ def set_symbols(store, player_one):
     return store
 
 def check_symbol(symbol):
-    if symbol == "X" or symbol == "O":
+    if symbol.upper() == "X" or symbol.upper() == "O":
         return True
     return False  
 
@@ -58,7 +60,7 @@ def phrases():
         "Draw":color.DRAW + "DRAW! NO WINNER!" + color.ENDC,
         "Invalid_Input":color.DRAW + "Nope! Try again!" + color.ENDC,
         "AI_Help":color.HINT + "Try this pls: " + color.ENDC,
-        "Too_Big":color.QUESTION + "Please choose between 1-9" + color.ENDC
+        "Too_Big":color.QUESTION + "Please choose between 1-" + str(settings()["boards"] * settings()["boards"]) + color.ENDC
         }
 
 def check_number(value):
@@ -85,7 +87,7 @@ def header():
 
 def check_board(number):
     number = int(number)
-    if number < ((settings()["boards"] * settings()["boards"]) + 1) and number > 0:
+    if number <= ((settings()["boards"] * settings()["boards"])) and number > 0:
         if board[number - 1] == "X" or board[number - 1] == "O":
             return False
         else:
@@ -114,13 +116,14 @@ def show_board():
 
     for place in range(0, len(board)):
         if (place + 1) % settings()["boards"] == 0:
-            store_board += color.BOARD + board[place] + "|" + color.ENDC + "\n"
+            store_board += board[place] + "|"
+            print(color.BOARD + store_board + color.ENDC)
+            store_board = ""
         elif (place + 1) % settings()["boards"] == 1:
-            store_board += color.BOARD + "|" + board[place] + "|" + color.ENDC
+            store_board += "|" + board[place] + "|"
         else:
-            store_board += color.BOARD + board[place] + "|" + color.ENDC
+            store_board += board[place] + "|"
     
-    print(store_board)
 
 ''' 
 def check_winner(symbol, board):
@@ -175,7 +178,7 @@ def all_reserved():
         if item == "X" or item =="O":
             count += 1
     
-    if count == 9:
+    if count == (settings()["boards"] * settings()["boards"]):
         return True
     return False
 
@@ -235,7 +238,7 @@ def artint():
 color = bcolors()
 header()
 
-single_player = True
+single_player = False
 player_one = settings()["player_one"]
 player_two = settings()["player_two"]
 Draws = settings()["draws"]
@@ -288,9 +291,9 @@ if check_symbol(player_input):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
-                        player_one += settings("player_one", player_one+1)["player_one"]
+                        player_one += 1
                     else:
-                        player_two += settings("player_two", player_one+1)["player_two"]
+                        player_two += settings("player_two", player_two+1)["player_two"]
 
                     rounds += 1
                     board = create_board(settings()["boards"])
@@ -301,8 +304,8 @@ if check_symbol(player_input):
         
                 if all_reserved():
                     print(Phrases["Draw"])
-                    Draws += 1
-                    rounds += 1
+                    Draws += settings("draws", Draws+1)["draws"]
+                    rounds +=  settings("rounds", rounds+1)["rounds"]
                     board = create_board(settings()["boards"])
                     continue
 
