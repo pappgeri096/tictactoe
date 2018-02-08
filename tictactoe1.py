@@ -112,17 +112,25 @@ def check_board(number):
 
 def show_board():
     store_board = ""
-    print(color.BOARD + "-------------------" + color.ENDC) 
+    lining = ""
+    print(color.BOARD + "-" + ("------"*board_size) + color.ENDC)
 
     for place in range(0, len(board)):
         if (place + 1) % board_size == 0:
-            store_board += board[place] + "|"
+            store_board += board[place] + "  |"
+            lining += "  |"
+            print(color.BOARD + lining + color.ENDC)
             print(color.BOARD + store_board + color.ENDC)
+            print(color.BOARD + lining + color.ENDC)
+            print(color.BOARD + "-" + ("------"*board_size) + color.ENDC)
             store_board = ""
+            lining = ""
         elif (place + 1) % board_size == 1:
-            store_board += "|" + board[place] + "|"
+            store_board += "|  " + board[place] + "  |  "
+            lining = "|  " + "   |   "
         else:
-            store_board += board[place] + "|"
+            store_board += board[place] + "  |  "
+            lining += "  |   "
 
 
 def check_winner(symbol, board, board_size):
