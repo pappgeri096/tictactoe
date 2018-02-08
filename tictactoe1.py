@@ -52,7 +52,7 @@ def create_board(size):
 
 def phrases():
     return {
-        "Symbol":color.DRAW + "Choose your symbol" + color.ENDC,
+        "Symbol": "Choose your symbol",
         "Game_Over":color.DRAW + "Finito! Good job!" + color.ENDC,
         "Player_One":color.DRAW + "PLAYER ONE WIN!" + color.ENDC,
         "Player_Two":color.DRAW + "PLAYER TWO WIN!" + color.ENDC,
@@ -189,6 +189,14 @@ def last_round():
 def user_input(ask):
     return input(ask)
 
+def change_game_mode(mode):
+    if(check_number(mode)):
+        mode = int(mode)
+
+    if mode == 1:
+        return True
+    return False
+
 def change_player(current):
     if current == 0:
         return 1    
@@ -204,8 +212,8 @@ def duplicate_board():
 
 def artint_turn():
     if settings()["player_one"] == "X":
-        return 1
-    return 0
+        return 0
+    return 1
 
 def choose_possible_move(moves_list):
     moves = []
@@ -246,7 +254,7 @@ def artint():
 color = bcolors()
 header()
 
-single_player = True
+
 player_one = settings()["player_one"]
 player_two = settings()["player_two"]
 Draws = settings()["draws"]
@@ -256,7 +264,10 @@ choices = []
 Phrases = phrases()
 
 board = create_board(settings()["boards"])
-player_input = input((Phrases["Symbol"]).upper())
+game_mode = input("1 or 2 player?")
+board_size
+single_player = change_game_mode(game_mode)
+player_input = input((Phrases["Symbol"])).upper()
 
 if not check_symbol(player_input):
     player_input = settings()["choice"]
@@ -301,7 +312,7 @@ if check_symbol(player_input):
                     if choices[current_player] == "X":
                         player_one += 1
                     else:
-                        player_two += settings("player_two", player_two+1)["player_two"]
+                        player_two += 1
 
                     rounds += 1
                     board = create_board(settings()["boards"])
