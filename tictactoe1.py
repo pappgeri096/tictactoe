@@ -115,11 +115,11 @@ def show_board():
     print(color.BOARD + "-------------------" + color.ENDC) 
 
     for place in range(0, len(board)):
-        if (place + 1) % settings()["boards"] == 0:
+        if (place + 1) % board_size == 0:
             store_board += board[place] + "|"
             print(color.BOARD + store_board + color.ENDC)
             store_board = ""
-        elif (place + 1) % settings()["boards"] == 1:
+        elif (place + 1) % board_size == 1:
             store_board += "|" + board[place] + "|"
         else:
             store_board += board[place] + "|"
@@ -197,6 +197,13 @@ def change_game_mode(mode):
         return True
     return False
 
+
+def board_size(size):
+    if(check_number(size)):
+        size = int(size)
+    
+    return size
+
 def change_player(current):
     if current == 0:
         return 1    
@@ -263,9 +270,10 @@ current_player = settings()["current"]
 choices = []
 Phrases = phrases()
 
-board = create_board(settings()["boards"])
 game_mode = input("1 or 2 player?")
-board_size
+board_size_ask = input("Board size?")
+board_size = board_size(board_size_ask)
+board = create_board(board_size)
 single_player = change_game_mode(game_mode)
 player_input = input((Phrases["Symbol"])).upper()
 
@@ -306,7 +314,7 @@ if check_symbol(player_input):
             if check_board(player_input):
                 board[int(player_input) - 1] = choices[current_player]
                
-                if check_winner(choices[current_player], board, settings()["boards"]):
+                if check_winner(choices[current_player], board, board_size):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
                     if choices[current_player] == "X":
@@ -315,7 +323,7 @@ if check_symbol(player_input):
                         player_two += 1
 
                     rounds += 1
-                    board = create_board(settings()["boards"])
+                    board = create_board(board_size)
 
                     continue
 
