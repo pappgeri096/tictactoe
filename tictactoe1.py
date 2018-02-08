@@ -87,7 +87,7 @@ def header():
 
 def check_board(number):
     number = int(number)
-    if number <= ((settings()["boards"] * settings()["boards"])) and number > 0:
+    if number <= (board_size * board_size) and number > 0:
         if board[number - 1] == "X" or board[number - 1] == "O":
             return False
         else:
@@ -123,28 +123,7 @@ def show_board():
             store_board += "|" + board[place] + "|"
         else:
             store_board += board[place] + "|"
-    
 
-''' 
-def check_winner(symbol, board):
-    if board[0] == symbol and board[1] == symbol and board[2] == symbol:
-        return True
-    elif board[3] == symbol and board[4] == symbol and board[5] == symbol:
-        return True
-    elif board[6] == symbol and board[7] == symbol and board[8] == symbol:
-        return True
-    elif board[0] == symbol and board[3] == symbol and board[6] == symbol:
-        return True
-    elif board[1] == symbol and board[4] == symbol and board[7] == symbol:
-        return True
-    elif board[2] == symbol and board[5] == symbol and board[8] == symbol:
-        return True
-    elif board[0] == symbol and board[4] == symbol and board[8] == symbol:
-        return True
-    elif board[2] == symbol and board[4] == symbol and board[6] == symbol:
-        return True
-    else: 
-        return False '''
 
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
@@ -154,7 +133,8 @@ def check_winner(symbol, board, board_size):
             return True
         elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol and check_index(board, index + (board_size - 1)) == symbol and index > board_size:
             return True
-        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size* board_size):
+        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size * board_size) - board_size:
+
             return True
     return False
 
@@ -199,15 +179,17 @@ def change_game_mode(mode):
 
 
 def board_size(size):
-    if(check_number(size)):
+    if(check_number(size) and int(size) > 2):
         size = int(size)
-    
-    return size
+        return size
+    else:
+        return 3
 
 def change_player(current):
-    if current == 0:
-        return 1    
-    return 0
+    if current == 1:
+        return 0
+    else:
+        return 1
 
 def duplicate_board():
     dupboard = []
@@ -306,7 +288,7 @@ if check_symbol(player_input):
                 if check_winner(choices[current_player], board, board_size):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
                     
-                    if choices[current_player] == "X":
+                    if current_player == 0:
                         player_one += 1
                     else:
                         player_two += 1
@@ -315,7 +297,7 @@ if check_symbol(player_input):
                     board = create_board(board_size)
 
                     continue
-
+                
                 current_player = change_player(current_player)
         
                 if all_reserved():
