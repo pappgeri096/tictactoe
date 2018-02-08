@@ -1,7 +1,5 @@
 from random import randint
 import os
-import sys
-
 
 class bcolors:
     HEADER = '\033[1;32;40m' # green letters w/ black background
@@ -10,12 +8,6 @@ class bcolors:
     HINT = '\033[1;31;40m' # green letters
     DRAW = '\033[1;0;41m' # red
     ENDC = '\033[0m'
-
-def keyboard_interrupt():
-    try:
-        sys.exit(1) # Or something that calls sys.exit()
-    except SystemExit as e:
-       sys.exit(e)
 
 def settings(key=None, value=None):
     default = {
