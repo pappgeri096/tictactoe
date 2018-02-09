@@ -112,7 +112,7 @@ def check_board(number):
 
 def show_board():
     store_board = ""
-    print(color.BOARD + "-------------------" + color.ENDC) 
+    print(color.BOARD + "-"*((3 * board_size) - (board_size - 1)) + color.ENDC) 
 
     for place in range(0, len(board)):
         if (place + 1) % board_size == 0:
@@ -127,15 +127,25 @@ def show_board():
 
 def check_winner(symbol, board, board_size):
     for index in range(len(board)):
-        if board[index] == symbol and check_index(board, index + 1) == symbol and check_index(board, index - 1) == symbol and not (index % board_size == 0):
-            return True
-        elif board[index] == symbol and check_index(board, index - board_size) == symbol and check_index(board, index + board_size) == symbol:
-            return True
-        elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol and check_index(board, index + (board_size - 1)) == symbol and index > board_size:
-            return True
-        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size * board_size) - board_size:
-
-            return True
+        if (board[index] == symbol and
+                check_index(board, index + 1) == symbol and
+                check_index(board, index - 1) == symbol and not
+                ((index + 1) % board_size == 0)):
+                return True
+        elif (board[index] == symbol and
+              check_index(board, index - board_size) == symbol and
+              check_index(board, index + board_size) == symbol):
+                return True
+        elif (board[index] == symbol and
+              check_index(board, index - (board_size - 1)) == symbol and
+              check_index(board, index + (board_size - 1)) == symbol and
+              index > board_size):
+                return True
+        elif (board[index] == symbol and
+              check_index(board, index - (board_size + 1)) == symbol and
+              check_index(board, index + (board_size + 1)) == symbol and
+              index < (board_size * board_size) - board_size):
+                return True
     return False
 
 def check_index(board, index):
