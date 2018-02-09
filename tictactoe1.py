@@ -1,6 +1,9 @@
 import random
 from random import randint
 import os
+import wave
+import pyaudio
+import sys
 
 class bcolors:
     HEADER = '\033[1;32;40m' # green letters w/ black background
@@ -146,6 +149,20 @@ def check_winner(symbol, board, board_size):
             return True
     return False
 
+def check_step(symbol, board, board_size):
+    for index in range(len(board)):
+        if board[index] == symbol and check_index(board, index + 1) == symbol or board[index] == symbol and check_index(board, index - 1) == symbol and not (index % board_size == 0):
+            return True
+        elif board[index] == symbol and check_index(board, index - board_size) == symbol or board[index] == symbol and check_index(board, index + board_size) == symbol:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size - 1)) == symbol or board[index] == symbol and check_index(board, index + (board_size - 1)) == symbol and index > board_size:
+            return True
+        elif board[index] == symbol and check_index(board, index - (board_size + 1)) == symbol or board[index] == symbol and check_index(board, index + (board_size + 1)) == symbol and index < (board_size * board_size) - board_size:
+
+            return True
+    return False
+
+
 def check_index(board, index):
     try:
         b = board[index]
@@ -227,15 +244,45 @@ def artint():
             if check_winner(choices[0], board_duplicate, board_size):
                 return i+1
                 
-    return randint(1,24)
-
-
-    ''' for i in range(0,24):
+    for i in range(0,25):
         board_duplicate = duplicate_board()
         if board_duplicate[i] == " ":
-            board_duplicate[i] = settings()["player_two"]
-            if check_step(settings()["player_two"], board_duplicate, settings()["boards"]):
-                return i  '''
+            board_duplicate[i] = choices[1]
+            if check_step(choices[1], board_duplicate, board_size):
+                return i+1  
+
+    return randint(1,24)
+
+def sound(track):
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    old_stderr = os.dup(2)
+    sys.stderr.flush()
+    os.dup2(devnull, 2)
+    os.close(devnull)
+
+    
+    chunk = 1024  
+
+    f = wave.open(track,"rb")  
+    p = pyaudio.PyAudio()  
+    stream = p.open(format = p.get_format_from_width(f.getsampwidth()),  
+                    channels = f.getnchannels(),  
+                    rate = f.getframerate(),  
+                    output = True)  
+    data = f.readframes(chunk)  
+
+    while data:  
+        stream.write(data)  
+        data = f.readframes(chunk)  
+
+    stream.stop_stream()  
+    stream.close()  
+
+    p.terminate() 
+
+    os.dup2(old_stderr, 2)
+    os.close(old_stderr)
+
 
 color = bcolors()
 header()
@@ -249,6 +296,7 @@ current_player = settings()["current"]
 choices = []
 Phrases = phrases()
 
+sound(r"start.wav")
 game_mode = input("1 or 2 player?")
 board_size_ask = input("Board size?")
 board_size = board_size(board_size_ask)
@@ -276,8 +324,10 @@ if check_symbol(player_input):
             else:
                 print(Phrases["Player_Two"])
             print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(Draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)    
+            sound(r"cheer.wav")
             break
                           
+        clear_terminal()
         header()
         show_board()
         print(color.QUESTION + "PLAYER ONE: " + str(player_one) + " | draws: " + str(Draws) + " | PLAYER TWO: " + str(player_two) + color.ENDC)
@@ -287,15 +337,15 @@ if check_symbol(player_input):
             player_input = artint()
         else:
             player_input = input(Phrases["Player_Step"])
-
         if check_number(player_input):
 
             if check_board(player_input):
                 board[int(player_input) - 1] = choices[current_player]
-               
+                sound(r"pling.wav")
                 if check_winner(choices[current_player], board, board_size):
                     print(color.DRAW + "PLAYER " + choices[current_player] + " WIN!" + color.ENDC)
-                    
+                    sound(r"tone.wav")
+
                     if current_player == 0:
                         player_one += 1
                     else:
